@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class DogeWebappApplicationTests {
+public class ApplicationTests {
 
     @Autowired
     private WebApplicationContext webApplicationContext;

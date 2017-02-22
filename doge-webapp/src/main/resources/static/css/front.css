@@ -1,0 +1,30 @@
+body {
+  display: flex;
+  justify-content: center;
+  background-color: #fafafa;
+}
+
+#doge {
+  border-radius: 50px;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+}
+
+.caption {
+  text-align: center;
+  padding: 0.5em;
+  font-family: Georgia, Times, "Times New Roman", serif;
+}
+
+.text-input {
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 0.25em;
+  height: 1.5em;
+  font-size: 1.25em;
+  margin-top: 0.5em;
+  color: 225;
+}
