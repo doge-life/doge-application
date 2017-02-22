@@ -1,0 +1,28 @@
+apply plugin: 'idea'
+
+allprojects {
+    group = 'main.doge'
+    idea {
+        project {
+            languageLevel = '1.8'
+            vcs = 'Git'
+        }
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+
+    sourceCompatibility=JavaVersion.VERSION_1_8
+    targetCompatibility=JavaVersion.VERSION_1_8 
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+
+task wrapper(type: Wrapper) {
+    gradleVersion = project.gradleVersion
+}
