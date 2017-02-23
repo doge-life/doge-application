@@ -1,23 +1,36 @@
 description = "doge webapp"
-
 apply plugin: 'war'
-apply plugin: 'org.springframework.boot'
 
-buildscript {
-    ext {
-        springBootVersion = '1.5.1.RELEASE'
-    }
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    }
+repositories {
+    mavenCentral()
+}
+dependencies {
+    testCompile('junit:junit:4.12')
 }
 
+apply plugin: 'org.springframework.boot'
+buildscript {
+    repositories { mavenCentral() }
+    dependencies { classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.1.RELEASE") }
+}
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     compile('org.springframework.boot:spring-boot-starter-web')
     testCompile('org.springframework.boot:spring-boot-starter-test')
-    testCompile('junit:junit:4.12')
+}
+bootRun {
+    addResources = true
+}
+
+apply plugin: 'com.moowork.node'
+buildscript {
+    repositories { maven { url "https://plugins.gradle.org/m2/" } }
+    dependencies { classpath("com.moowork.gradle:gradle-node-plugin:1.1.1") }
+}
+check.dependsOn npm_test
+npm_test.dependsOn npm_install
+node {
+    version = "6.10.0"
+    npmVersion = "4.2.0"
+    download = true
 }

@@ -1,0 +1,11 @@
+{
+    "name": "doge-webapp",
+    "version": "0.0.1",
+    "description": "doge-webapp",
+    "scripts": {
+        "test": "NODE_PATH='src/main/resources/static/js' node_modules/.bin/mocha 'src/test/js/**/*.js'"
+    },
+    "dependencies": {
+        "mocha": "3.2.0"
+    }
+}
