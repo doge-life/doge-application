@@ -13,12 +13,25 @@ allprojects {
 subprojects {
     apply plugin: 'java'
     apply plugin: 'idea'
+    apply plugin: 'pmd'
 
     sourceCompatibility=JavaVersion.VERSION_1_8
-    targetCompatibility=JavaVersion.VERSION_1_8 
+    targetCompatibility=JavaVersion.VERSION_1_8
 
     repositories {
         mavenCentral()
+    }
+
+    pmdMain {
+    ignoreFailures = true
+    ruleSets = [
+             'java-basic',
+             'java-braces',
+             'java-codesize',
+             'java-empty',
+             'java-strings',
+             'java-unusedcode'
+             ]
     }
 }
 
