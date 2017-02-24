@@ -25,4 +25,9 @@ public class TodoService {
         Todo[] todosFromService = restTemplate.getForObject(uri + "/todos", Todo[].class);
         return Arrays.asList(todosFromService);
     }
+
+    public Todo getSingleTodo(int todoId) {
+        return restTemplate.getForObject(uri + "/todo/" + todoId, Todo.class);
+
+    }
 }
