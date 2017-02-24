@@ -40,5 +40,4 @@ public class FrontPageControllerTest {
         assertThat(modelAndView.getViewName(), is("front"));
         assertThat(modelAndView.getModel().get("todos"), is(expectedTodos));
     }
-
 }

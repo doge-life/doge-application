@@ -22,12 +22,14 @@ public class TodoService {
     }
 
     public List<Todo> getTodos() {
-        Todo[] todosFromService = restTemplate.getForObject(uri + "/todos", Todo[].class);
-        return Arrays.asList(todosFromService);
+        return Arrays.asList(callService(uri + "/todos", Todo[].class));
     }
 
     public Todo getSingleTodo(int todoId) {
-        return restTemplate.getForObject(uri + "/todo/" + todoId, Todo.class);
+        return callService("/todo" + todoId, Todo.class);
+    }
 
+    private <T> T callService(String uri, Class<T> type) {
+        return restTemplate.getForObject(uri, type);
     }
 }
