@@ -26,7 +26,7 @@ public class TodoService {
     }
 
     public Todo getSingleTodo(int todoId) {
-        return callService("/todo" + todoId, Todo.class);
+        return callService(uri + "/todo/" + Integer.toString(todoId), Todo.class);
     }
 
     private <T> T callService(String uri, Class<T> type) {

@@ -46,7 +46,7 @@ public class TodoServiceTest {
     @Test
     public void getSingleTodo() {
         Todo expectedTodo = new Todo(11, "Single Todo", false);
-        when(template.getForObject(EXPECTED_URI + "/todo/" + expectedTodo.getId(), Todo.class))
+        when(template.getForObject(EXPECTED_URI + "/todo/11", Todo.class))
                 .thenReturn(expectedTodo);
 
         Todo actualTodo = subject.getSingleTodo(11);
