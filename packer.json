@@ -1,0 +1,22 @@
+{
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": ""
+  },
+	"builders": [
+		{
+				"type": "docker",
+				"image": "ubuntu:14.04",
+				"commit": true
+		}
+	],
+	"provisioners": [
+		{
+			"type": "shell",
+			"inline": [
+				"sleep 30",
+				"scripts/install_java.sh"
+			]
+		}
+	]
+}
