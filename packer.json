@@ -1,9 +1,8 @@
 {
   "variables": {
-    "aws_access_key": "",
-    "aws_secret_key": "",
-    "proxy_uname": "",
-    "proxy_password": ""
+    "proxy_uname": "{{env PROXY_UNAME}}",
+    "proxy_password": "{{env PROXY_PASSWORD}}",
+    "proxy_host": "{{env PROXY_HOST}}"
   },
 	"builders": [
 		{
@@ -17,7 +16,8 @@
 			"type": "shell",
 			"script": "scripts/install_java.sh",
       "environment_vars": ["PROXY_UNAME={{user `proxy_uname`}}",
-                           "PROXY_PASSWORD={{user `proxy_password`}}"]
+                             "PROXY_PASSWORD={{user `proxy_password`}}",
+                             "PROXY_HOST={{user `proxy_host`}}"]
 		}
 	]
 }
