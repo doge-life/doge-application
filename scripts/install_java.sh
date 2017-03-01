@@ -1,7 +1,7 @@
 #!/bin/bash
 pushd .
 
-if [[ -z $PROXY_HOST ]]; then
+if [[ ! -z $PROXY_HOST ]]; then
 		printf "Acquire::http::Proxy \"http://$PROXY_UNAME:$PROXY_PASSWORD@L02PIPROXY01.corp.local:80\";" > /etc/apt/apt.conf.d/00DogeProxy
 fi
 
