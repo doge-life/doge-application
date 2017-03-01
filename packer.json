@@ -11,12 +11,14 @@
 		}
 	],
 	"provisioners": [
+        {
+            "type": "file",
+            "source": "jdk",
+            "destination": "/tmp"
+        },
 		{
 			"type": "shell",
-			"inline": [
-				"sleep 30",
-				"scripts/install_java.sh"
-			]
+			"script": "scripts/install_java.sh"
 		}
 	]
 }
