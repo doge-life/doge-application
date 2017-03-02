@@ -1,4 +1,4 @@
-{   
+{
     "variables": {
         "proxy_uname": "{{env `ASCENA_PROXY_UNAME`}}",
         "proxy_password": "{{env `ASCENA_PROXY_PASSWORD`}}",
@@ -8,7 +8,7 @@
     "builders": [
         {
             "type": "docker",
-            "image": "ubuntu:14.04",
+            "image": "ubuntu",
             "commit": true
         }
     ],
