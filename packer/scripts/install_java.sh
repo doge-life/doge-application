@@ -12,8 +12,9 @@ function download_java() {
         "http://download.oracle.com/otn-pub/java/jdk/8u121-b13/e9e7ea248e2c4826b92b3f075a80e441/jdk-8u121-linux-x64.tar.gz"
 }
 
-function bashrc() {
+function add_to_profile() {
     printf "$@" >> $HOME/.bashrc
+    source ~/.bashrc
 }
 
 function install_java() {
@@ -22,12 +23,13 @@ function install_java() {
     tar xvzf '/tmp/downloads/jdk-8u121-linux-x64.tar.gz'
     ln -s $PWD/jdk1.8.0_121 $JAVA_INSTALL_LOCATION/jdk
 
-    bashrc "export JAVA_HOME=$JAVA_INSTALL_LOCATION/jdk\n"
-    bashrc "export JDK_HOME=\$JAVA_HOME\n"
-    bashrc "export JRE_HOME=\$JAVA_HOME/jre\n"
-    bashrc "export CLASSPATH=.:\$JAVA_HOME/lib:\$JAVA_HOME/jre/lib\n"
-    bashrc "export PATH=\$PATH:\$JAVA_HOME/bin\n"
-    bashrc "\n"
+    add_to_profile "# Java Exports\n"
+    add_to_profile "export JAVA_HOME=$JAVA_INSTALL_LOCATION/jdk\n"
+    add_to_profile "export JDK_HOME=\$JAVA_HOME\n"
+    add_to_profile "export JRE_HOME=\$JAVA_HOME/jre\n"
+    add_to_profile "export CLASSPATH=.:\$JAVA_HOME/lib:\$JAVA_HOME/jre/lib\n"
+    add_to_profile "export PATH=\$PATH:\$JAVA_HOME/bin\n"
+    add_to_profile "\n"
 }
 
 function main() {
