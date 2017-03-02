@@ -39,5 +39,11 @@
             "type": "shell",
             "script": "scripts/install_java.sh"
         }
+    ],
+    "post-processors": [
+        {
+            "type": "docker-tag",
+            "repository": "doge/java_ready"
+        }
     ]
 }
