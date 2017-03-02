@@ -1,23 +1,33 @@
-{
-  "variables": {
-    "proxy_uname": "{{env PROXY_UNAME}}",
-    "proxy_password": "{{env PROXY_PASSWORD}}",
-    "proxy_host": "{{env PROXY_HOST}}"
-  },
-	"builders": [
-		{
-				"type": "docker",
-				"image": "ubuntu:14.04",
-				"commit": true
-		}
-	],
-	"provisioners": [
-		{
-			"type": "shell",
-			"script": "scripts/install_java.sh",
-      "environment_vars": ["PROXY_UNAME={{user `proxy_uname`}}",
-                             "PROXY_PASSWORD={{user `proxy_password`}}",
-                             "PROXY_HOST={{user `proxy_host`}}"]
-		}
-	]
+{   
+    "variables": {
+        "proxy_uname": "{{env `DOGE_PROXY_UNAME`}}",
+        "proxy_password": "{{env `DOGE_PROXY_PASSWORD`}}",
+        "proxy_host": "{{env `DOGE_PROXY_HOST`}}",
+        "proxy_port": "{{env `DOGE_PROXY_PORT`}}"
+    },
+    "builders": [
+        {
+            "type": "docker",
+            "image": "ubuntu:14.04",
+            "commit": true
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "downloads",
+            "destination": "/tmp"
+        },
+        {
+            "type": "shell",
+            "script": "scripts/install_java.sh",
+            "environment_vars": [
+                "PROXY_UNAME={{user `proxy_uname`}}",
+                "PROXY_PASSWORD={{user `proxy_password`}}",
+                "PROXY_HOST={{user `proxy_host`}}",
+                "PROXY_PORT={{user `proxy_port`}}"
+            ]
+        }
+    ]
 }
+
