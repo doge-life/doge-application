@@ -1,0 +1,43 @@
+{
+    "variables": {
+        "proxy_uname": "{{env `ASCENA_PROXY_UNAME`}}",
+        "proxy_password": "{{env `ASCENA_PROXY_PASSWORD`}}",
+        "proxy_host": "{{env `ASCENA_PROXY_HOST`}}",
+        "proxy_port": "{{env `ASCENA_PROXY_PORT`}}"
+    },
+    "builders": [
+        {
+            "type": "docker",
+            "image": "ubuntu",
+            "commit": true,
+            "run_command": [
+                "-d", "-it",
+                "-e", "PROXY_UNAME={{user `proxy_uname`}}",
+                "-e", "PROXY_PASSWORD={{user `proxy_password`}}",
+                "-e", "PROXY_HOST={{user `proxy_host`}}",
+                "-e", "PROXY_PORT={{user `proxy_port`}}",
+                "{{.Image}}",
+                "/bin/bash"
+            ]
+        },
+        {
+            "type": "amazon-ebs",
+            "region": "us-east-1",
+            "source_ami": "ami-fce3c696",
+            "instance_type": "t2.micro",
+            "ssh_username": "ubuntu",
+            "ami_name": "packer-example {{timestamp}}"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "downloads",
+            "destination": "/tmp"
+        },
+        {
+            "type": "shell",
+            "script": "scripts/install_java.sh"
+        }
+    ]
+}
