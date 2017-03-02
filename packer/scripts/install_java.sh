@@ -59,13 +59,5 @@ function main() {
     popd
 }
 
-function as_root() {
-    if [[ $EUID != 0 ]]; then
-        sudo "$@"
-    else
-        "$@"
-    fi
-}
-
-as_root main "$@"
+main "$@"
 
