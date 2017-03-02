@@ -9,7 +9,31 @@
         {
             "type": "docker",
             "image": "ubuntu",
-            "commit": true
+            "commit": true,
+            "run_command": [
+              "-d",
+              "-it",
+              "-e",
+              "PROXY_UNAME={{user `proxy_uname`}}",
+              "-e",
+              "PROXY_PASSWORD={{user `proxy_password`}}",
+              "-e",
+              "PROXY_HOST={{user `proxy_host`}}",
+              "-e",
+              "PROXY_PORT={{user `proxy_port`}}",
+              "{{.Image}}",
+              "/bin/bash"
+            ]
+        },
+        {
+          "type": "amazon-ebs",
+          "access_key": "{{user `aws_access_key`}}",
+          "secret_key": "{{user `aws_secret_key`}}",
+          "region": "us-east-1",
+          "source_ami": "ami-fce3c696",
+          "instance_type": "t2.micro",
+          "ssh_username": "ubuntu",
+          "ami_name": "packer-example {{timestamp}}"
         }
     ],
     "provisioners": [
@@ -20,14 +44,7 @@
         },
         {
             "type": "shell",
-            "script": "scripts/install_java.sh",
-            "environment_vars": [
-                "PROXY_UNAME={{user `proxy_uname`}}",
-                "PROXY_PASSWORD={{user `proxy_password`}}",
-                "PROXY_HOST={{user `proxy_host`}}",
-                "PROXY_PORT={{user `proxy_port`}}"
-            ]
+            "script": "scripts/install_java.sh"
         }
     ]
 }
-
