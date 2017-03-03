@@ -10,6 +10,9 @@
             "type": "docker",
             "image": "ubuntu",
             "commit": true,
+            "changes": [
+                "USER ubuntu"
+            ],
             "run_command": [
                 "-d", "-it",
                 "-e", "PROXY_UNAME={{user `proxy_uname`}}",
@@ -34,6 +37,11 @@
             "type": "file",
             "source": "downloads",
             "destination": "/tmp"
+        },
+        {
+            "type": "shell",
+            "only": ["docker"],
+            "script": "scripts/add_ubuntu_user.sh"
         },
         {
             "type": "shell",

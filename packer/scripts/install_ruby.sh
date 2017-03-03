@@ -1,14 +1,8 @@
 #!/bin/bash
 
-function as_root() {
-    if [[ $EUID != 0 ]]; then
-        sudo -i "$@"
-    else
-        "$@"
-    fi
-}
+sudo apt-get update
+sudo apt-get upgrade -y
+sudo apt-get dist-upgrade -y
+sudo apt-get install -y ruby
+sudo rm -rf /var/lib/apt/lists/*
 
-as_root apt-get update
-as_root apt-get upgrade -y
-as_root apt-get dist-upgrade -y
-as_root apt-get install -y ruby
