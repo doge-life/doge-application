@@ -1,8 +1,16 @@
-#!/bin/bash -eu
+#!/bin/bash -e
+
+function as_root() {
+    if [[ $EUID != 0 ]]; then
+        sudo -i "$@"
+    else
+        "$@"
+    fi
+}
 
 if [[ ! -z $PROXY_HOST ]]; then
     export http_proxy="http://$PROXY_UNAME:$PROXY_PASSWORD@$PROXY_HOST:$PROXY_PORT"
-    echo "Acquire::http::Proxy \"http://$PROXY_UNAME:$PROXY_PASSWORD@$PROXY_HOST:$PROXY_PORT\";" \
+    as_root echo "Acquire::http::Proxy \"http://$PROXY_UNAME:$PROXY_PASSWORD@$PROXY_HOST:$PROXY_PORT\";" \
         > /etc/apt/apt.conf.d/00DogeProxy
 else
     printf 'PROXY_HOST does not seem to have been set...\n'

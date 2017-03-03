@@ -2,11 +2,19 @@
 
 JAVA_INSTALL_LOCATION="$HOME/java_install"
 
+function as_root() {
+    if [[ $EUID != 0 ]]; then
+        sudo -i "$@"
+    else
+        "$@"
+    fi
+}
+
 function download_java() {
     mkdir -p /tmp/downloads
     cd /tmp/downloads
-    apt-get update
-    apt-get install -y curl
+    as_root apt-get update
+    as_root apt-get install -y curl
     printf 'Downloading Java... (This might take a while)\n'
     curl -s -L -O -H "Cookie: oraclelicense=accept-securebackup-cookie" -k \
         "http://download.oracle.com/otn-pub/java/jdk/8u121-b13/e9e7ea248e2c4826b92b3f075a80e441/jdk-8u121-linux-x64.tar.gz"
