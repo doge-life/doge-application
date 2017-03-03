@@ -37,6 +37,7 @@
         },
         {
             "type": "shell",
+            "only": ["docker"],
             "script": "scripts/configure_proxy.sh"
         },
         {
