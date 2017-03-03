@@ -18,3 +18,6 @@ gradle-app.setting
 .DS_Store
 
 node_modules
+
+packer/downloads/*
+!packer/downloads/README.md
