@@ -41,12 +41,12 @@
         {
             "type": "shell",
             "only": ["docker"],
-            "script": "scripts/add_ubuntu_user.sh"
+            "script": "scripts/configure_proxy.sh"
         },
         {
             "type": "shell",
             "only": ["docker"],
-            "script": "scripts/configure_proxy.sh"
+            "script": "scripts/add_ubuntu_user.sh"
         },
         {
             "type": "shell",
