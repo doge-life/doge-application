@@ -14,11 +14,16 @@
                 "USER ubuntu"
             ],
             "run_command": [
-                "-d", "-it",
-                "-e", "PROXY_UNAME={{user `proxy_uname`}}",
-                "-e", "PROXY_PASSWORD={{user `proxy_password`}}",
-                "-e", "PROXY_HOST={{user `proxy_host`}}",
-                "-e", "PROXY_PORT={{user `proxy_port`}}",
+                "-d",
+                "-it",
+                "-e",
+                "PROXY_UNAME={{user `proxy_uname`}}",
+                "-e",
+                "PROXY_PASSWORD={{user `proxy_password`}}",
+                "-e",
+                "PROXY_HOST={{user `proxy_host`}}",
+                "-e",
+                "PROXY_PORT={{user `proxy_port`}}",
                 "{{.Image}}",
                 "/bin/bash"
             ]
@@ -40,13 +45,17 @@
         },
         {
             "type": "shell",
-            "only": ["docker"],
-            "script": "scripts/add_ubuntu_user.sh"
+            "only": [
+                "docker"
+            ],
+            "script": "scripts/configure_proxy.sh"
         },
         {
             "type": "shell",
-            "only": ["docker"],
-            "script": "scripts/configure_proxy.sh"
+            "only": [
+                "docker"
+            ],
+            "script": "scripts/add_ubuntu_user.sh"
         },
         {
             "type": "shell",
@@ -69,7 +78,9 @@
     "post-processors": [
         {
             "type": "docker-tag",
-            "only": ["docker"],
+            "only": [
+                "docker"
+            ],
             "repository": "doge/java_ready"
         }
     ]
