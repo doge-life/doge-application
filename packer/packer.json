@@ -8,7 +8,7 @@
     "builders": [
         {
             "type": "docker",
-            "image": "ubuntu",
+            "image": "ubuntu:16.04",
             "commit": true,
             "changes": [
                 "USER ubuntu"
@@ -31,7 +31,7 @@
         {
             "type": "amazon-ebs",
             "region": "us-east-1",
-            "source_ami": "ami-fce3c696",
+            "source_ami": "ami-f4cc1de2",
             "instance_type": "t2.micro",
             "ssh_username": "ubuntu",
             "ami_name": "packer-example {{timestamp}}"
@@ -48,22 +48,17 @@
             "only": [
                 "docker"
             ],
-            "script": "scripts/configure_proxy.sh"
+            "scripts": [
+                "scripts/configure_proxy.sh",
+                "scripts/add_ubuntu_user.sh"
+            ]
         },
         {
             "type": "shell",
-            "only": [
-                "docker"
-            ],
-            "script": "scripts/add_ubuntu_user.sh"
-        },
-        {
-            "type": "shell",
-            "script": "scripts/install_ruby.sh"
-        },
-        {
-            "type": "shell",
-            "script": "scripts/install_java.sh"
+            "inline": [
+                "sudo apt-get update",
+                "sudo apt-get install -y ruby openjdk-8-jdk"
+            ]
         },
         {
             "type": "file",
