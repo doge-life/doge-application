@@ -13,3 +13,13 @@ Code Climate Issues | [![Issue Count](https://codeclimate.com/github/doge-life/d
 # doge-application
 The Front-end application of Doge Life.
 
+## Connecting to the proxy 
+
+If you are building a Docker image on the DogeData network, you will need to connect to a proxy. The packer build is looking for the following environment variables to be set: 
+
+```bash
+export DOGE_PROXY_UNAME='domain\your%20username'
+export DOGE_PROXY_PASSWORD='your%20password'
+export DOGE_PROXY_HOST='l02piproxy01.corp.local'
+export DOGE_PROXY_PORT='80'
+```
