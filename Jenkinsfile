@@ -1,7 +1,8 @@
 #!groovy
 
 def getAMIFromPackerManifest() {
-    def manifest = new File('packer/manifest.json')
+    def workspace = pwd()
+    def manifest = new File("${workspace}/packer/manifest.json")
     def json = new groovy.json.JsonSlurper().parseText(manifest.text)
     json.builds.first.artifact_id
 }
