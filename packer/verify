@@ -1,8 +1,7 @@
 #!/bin/bash -e
 
-pushd .
-cd `dirname "$0"`
+pushd `dirname "$0"`
 
-packer build -except=amazon-ebs packer.json
+packer build packer.json
 
 popd
