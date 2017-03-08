@@ -21,3 +21,4 @@ node_modules
 
 packer/downloads/*
 !packer/downloads/README.md
+packer/manifest.json
