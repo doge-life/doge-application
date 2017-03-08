@@ -1,5 +1,11 @@
 #!groovy
 
+def getAMIFromPackerManifest() {
+    def manifest = new File('packer/manifest.json')
+    def json = new groovy.json.JsonSlurper().parseText(manifest.text)
+    json.builds.first.artifact_id
+}
+
 pipeline {
     agent any
 
@@ -22,6 +28,11 @@ pipeline {
         stage('Build and verify images') {
             steps {
                sh './packer/verify' 
+            }
+        }
+        stage('Terraform') {
+            steps {
+                echo "${getAMIFromPackerManifest()}"
             }
         }
     }

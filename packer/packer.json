@@ -26,5 +26,11 @@
             "type": "shell",
             "script": "scripts/serverspec.sh"
         }
+    ],
+    "post-processors": [
+        {
+            "type": "manifest",
+            "output": "manifest.json"
+        }
     ]
 }
