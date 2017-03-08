@@ -4,7 +4,7 @@ def getAMIFromPackerManifest() {
     def workspace = pwd()
     def manifest = new File("${workspace}/packer/manifest.json")
     def json = new groovy.json.JsonSlurper().parseText(manifest.text)
-    json.builds.first.artifact_id
+    json.builds.first().artifact_id
 }
 
 pipeline {
@@ -26,9 +26,14 @@ pipeline {
                 archiveArtifacts artifacts: '**/build/reports/**', fingerprint: true
             }
         }
+        stage('Build Application') {
+            steps {
+                sh './gradlew build'
+            }
+        }
         stage('Build and verify images') {
             steps {
-               sh './packer/verify' 
+                sh './packer/verify'
             }
         }
         stage('Terraform') {
