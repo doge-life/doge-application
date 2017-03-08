@@ -13,5 +13,10 @@ pipeline {
                 archiveArtifacts artifacts: '**/build/reports/**', fingerprint: true
             }
         }
+        stage('Build and verify images') {
+            steps {
+               sh './packer/verify' 
+            }
+        }
     }
 }
