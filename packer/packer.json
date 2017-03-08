@@ -14,8 +14,18 @@
             "type": "shell",
             "inline": [
                 "sudo apt-get update",
-                "sudo apt-get install -y ruby openjdk-8-jdk"
+                "sudo apt-get install -y ruby openjdk-8-jdk",
+                "sudo mkdir /var/doge-webapp"
             ]
+        },
+        {
+            "type": "file",
+            "source": "../doge-webapp/build/libs/doge-webapp.jar",
+            "destination": "~/doge-webapp.jar"
+        },
+        {
+            "type": "shell",
+            "script": "scripts/install_doge_webapp.sh"
         },
         {
             "type": "file",
