@@ -25,9 +25,14 @@ pipeline {
                 archiveArtifacts artifacts: '**/build/reports/**', fingerprint: true
             }
         }
+        stage('Build Application') {
+            steps {
+                sh './gradlew build'
+            }
+        }
         stage('Build and verify images') {
             steps {
-               sh './packer/verify' 
+                sh './packer/verify'
             }
         }
         stage('Terraform') {
