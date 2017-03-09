@@ -33,7 +33,7 @@ pipeline {
         }
         stage('Build and verify images') {
             steps {
-                sh './packer/verify'
+                sh './packer/build'
             }
         }
         stage('Terraform') {
