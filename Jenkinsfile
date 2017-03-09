@@ -34,7 +34,6 @@ pipeline {
         }
         stage('Build and Verify Images') {
             steps {
-                sh "rm -f ${workspace}/packer/manifest.json"
                 sh './packer/build'
             }
         }
