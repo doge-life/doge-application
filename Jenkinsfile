@@ -42,8 +42,8 @@ pipeline {
                 branch 'master'
             }
             steps {
-                sh ./terraform/providers/aws/us_east_1_dev/plan "${getAMIFromPackerManifest()}"
-                sh ./terraform/providers/aws/us_east_1_dev/apply "${getAMIFromPackerManifest()}"
+                sh "./terraform/providers/aws/us_east_1_dev/plan ${getAMIFromPackerManifest()}"
+                sh "./terraform/providers/aws/us_east_1_dev/apply ${getAMIFromPackerManifest()}"
             }
         }
     }
