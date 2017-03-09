@@ -37,6 +37,9 @@ pipeline {
             }
         }
         stage('Terraform') {
+            when {
+                branch 'master'
+            }
             steps {
                 echo "${getAMIFromPackerManifest()}"
             }
