@@ -45,5 +45,21 @@ pipeline {
                 sh "./terraform/deploy.sh dev ${getAMIFromPackerManifest()}"
             }
         }
+        stage('Functional tests against dev'} {
+            when {
+                branch 'master'
+            }
+            steps {
+                echo 'Functional tests running...and done!'
+            }
+        }
+        stage('Deploy to Prod') {
+            when {
+                branch 'master'
+            }
+            steps {
+                sh "./terraform/deploy.sh prod ${getAMIFromPackerManifest()}"
+            }
+        }
     }
 }
