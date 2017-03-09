@@ -1,8 +1,0 @@
-#!/bin/bash
-
-pushd .
-cd `dirname "$0"`
-
-packer build packer.json
-
-popd

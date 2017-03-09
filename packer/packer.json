@@ -1,60 +1,15 @@
 {
-    "variables": {
-        "proxy_uname": "{{env `DOGE_PROXY_UNAME`}}",
-        "proxy_password": "{{env `DOGE_PROXY_PASSWORD`}}",
-        "proxy_host": "{{env `DOGE_PROXY_HOST`}}",
-        "proxy_port": "{{env `DOGE_PROXY_PORT`}}",
-        "current_timestamp": "{{timestamp}}"
-    },
     "builders": [
-        {
-            "type": "docker",
-            "image": "ubuntu:16.04",
-            "commit": true,
-            "changes": [
-                "USER ubuntu",
-                "ENTRYPOINT sudo service doge-webapp start && /bin/bash"
-            ],
-            "run_command": [
-                "-d",
-                "-it",
-                "-e",
-                "PROXY_UNAME={{user `proxy_uname`}}",
-                "-e",
-                "PROXY_PASSWORD={{user `proxy_password`}}",
-                "-e",
-                "PROXY_HOST={{user `proxy_host`}}",
-                "-e",
-                "PROXY_PORT={{user `proxy_port`}}",
-                "{{.Image}}",
-                "/bin/bash"
-            ]
-        },
         {
             "type": "amazon-ebs",
             "region": "us-east-1",
             "source_ami": "ami-f4cc1de2",
             "instance_type": "t2.micro",
             "ssh_username": "ubuntu",
-            "ami_name": "doge-application-{{user `current_timestamp`}}"
+            "ami_name": "doge-application {{timestamp}}"
         }
     ],
     "provisioners": [
-        {
-            "type": "file",
-            "source": "downloads",
-            "destination": "/tmp"
-        },
-        {
-            "type": "shell",
-            "only": [
-                "docker"
-            ],
-            "scripts": [
-                "scripts/configure_proxy.sh",
-                "scripts/add_ubuntu_user.sh"
-            ]
-        },
         {
             "type": "shell",
             "inline": [
@@ -84,11 +39,8 @@
     ],
     "post-processors": [
         {
-            "type": "docker-tag",
-            "only": [
-                "docker"
-            ],
-            "repository": "doge/doge-application-{{user `current_timestamp`}}"
+            "type": "manifest",
+            "output": "manifest.json"
         }
     ]
 }

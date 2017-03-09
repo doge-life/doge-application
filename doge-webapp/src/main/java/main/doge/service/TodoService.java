@@ -8,6 +8,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TodoService {
@@ -22,7 +23,7 @@ public class TodoService {
     }
 
     public List<Todo> getTodos() {
-        return Arrays.asList(callService(uri + "/todos", Todo[].class));
+        return Arrays.stream(callService(uri + "/todos", Todo[].class)).collect(Collectors.toList());
     }
 
     public Todo getSingleTodo(int todoId) {
