@@ -17,9 +17,21 @@ then
 fi
 
 APP_ENVIRONMENT=$1
-AMI_NAME=$2
+AMI_ID=$2
 
-./providers/aws/us_east_1_$APP_ENVIRONMENT/plan $AMI_NAME
-./providers/aws/us_east_1_$APP_ENVIRONMENT/apply $AMI_NAME
+case "$APP_ENVIRONMENT" in
+    "dev"|"prod" ) ;;
+    * ) echo "environment must be either \"dev\" or \"prod\"" && exit 1;;
+esac
+
+terraform remote config \
+    -backend=S3 \
+    -backend-config="bucket=doge-application" \
+    -backend-config="key=terraform/${APP_ENVIRONMENT}-env-terraform.tfstate" \
+    -backend-config="region=us-east-1"
+
+terraform plan -var ami_id=$AMI_ID providers/aws/us_east_1_$APP_ENVIRONMENT
+terraform apply -var ami_id=$AMI_ID providers/aws/us_east_1_$APP_ENVIRONMENT
 
 popd
+
