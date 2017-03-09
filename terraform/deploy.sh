@@ -24,14 +24,16 @@ case "$APP_ENVIRONMENT" in
     * ) echo "environment must be either \"dev\" or \"prod\"" && exit 1;;
 esac
 
+pushd "providers/aws/us_east_1_$APP_ENVIRONMENT"
 terraform remote config \
     -backend=S3 \
     -backend-config="bucket=doge-application" \
     -backend-config="key=terraform/${APP_ENVIRONMENT}-env-terraform.tfstate" \
     -backend-config="region=us-east-1"
 
-terraform plan -var ami_id=$AMI_ID providers/aws/us_east_1_$APP_ENVIRONMENT
-terraform apply -var ami_id=$AMI_ID providers/aws/us_east_1_$APP_ENVIRONMENT
+terraform plan -var ami_id=$AMI_ID
+terraform apply -var ami_id=$AMI_ID
+popd
 
 popd
 
