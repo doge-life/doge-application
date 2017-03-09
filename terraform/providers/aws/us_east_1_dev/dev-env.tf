@@ -1,9 +1,11 @@
+variable "ami_id" {}
+
 provider "aws" {
   region     = "us-east-1"
 }
 
 resource "aws_instance" "doge-application-dev-env" {
-  ami           = "ami-1f389809"
+  ami           = "${var.ami_id}"
   instance_type = "t2.micro"
 	vpc_security_group_ids = ["${aws_security_group.doge-application-dev.id}"]
 	tags {

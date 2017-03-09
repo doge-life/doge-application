@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+pushd `dirname "$0"`
+
+terraform apply -var ami_id=$1
+
+popd

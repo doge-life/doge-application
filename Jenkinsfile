@@ -4,7 +4,8 @@ def getAMIFromPackerManifest() {
     def workspace = pwd()
     def manifest = new File("${workspace}/packer/manifest.json")
     def json = new groovy.json.JsonSlurper().parseText(manifest.text)
-    json.builds.first().artifact_id
+    def ami_info = json.builds.first().artifact_id.split(':')
+    ami_info[1]
 }
 
 pipeline {
@@ -41,7 +42,8 @@ pipeline {
                 branch 'master'
             }
             steps {
-                echo "${getAMIFromPackerManifest()}"
+                sh ./terraform/providers/aws/us_east_1_dev/plan ${getAMIFromPackerManifest()}
+                sh ./terraform/providers/aws/us_east_1_dev/apply ${getAMIFromPackerManifest()}
             }
         }
     }
