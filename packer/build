@@ -2,6 +2,7 @@
 
 pushd `dirname "$0"`
 
+rm -f manifest.json
 packer build packer.json
 
 popd
