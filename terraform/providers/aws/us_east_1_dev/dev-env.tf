@@ -43,12 +43,3 @@ resource "aws_security_group" "doge-application-dev" {
     }
 
 }
-
-data "terraform_remote_state" "doge-application-dev-env-terraform-state" {
-    backend = "s3"
-    config {
-        bucket = "doge-application"
-        key = "terraform/dev-env-terraform.tfstate"
-        region = "us-east-1"
-    }
-}
