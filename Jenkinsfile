@@ -32,12 +32,12 @@ pipeline {
                 sh './gradlew build'
             }
         }
-        stage('Build and verify images') {
+        stage('Build and Verify Images') {
             steps {
                 sh './packer/build'
             }
         }
-        stage('Terraform') {
+        stage('Deploy to Dev') {
             when {
                 branch 'master'
             }
