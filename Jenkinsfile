@@ -42,7 +42,7 @@ pipeline {
                 branch 'master'
             }
             steps {
-                withCredentials([file(credentialsId: 'doge-private-key-file', variable: 'TF_ENV_doge_private_key_file')]) {
+                withCredentials([file(credentialsId: 'doge-private-key-file', variable: 'TF_VAR_doge_private_key_file')]) {
                     sh "./terraform/providers/aws/us_east_1_dev/plan ${getAMIFromPackerManifest()}"
                     sh "./terraform/providers/aws/us_east_1_dev/apply ${getAMIFromPackerManifest()}"
                     archiveArtifacts artifacts: "**/terraform.tfstate"
