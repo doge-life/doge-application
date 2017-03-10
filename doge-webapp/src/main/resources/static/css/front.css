@@ -1,7 +1,7 @@
 body {
   display: flex;
   justify-content: center;
-  background-color: #fafafa;
+  background-color: #0a0a0a;
   font-family: Georgia, Times, "Times New Roman", serif;
 }
 
@@ -18,21 +18,24 @@ body {
   text-align: center;
   padding: 0.5em;
   font-size: 1.25em;
+  color: #eee;
 }
 
 .text-input {
   text-align: center;
-  border: 2px solid #ddd;
+  border: 2px solid #55d;
   border-radius: 0.33em;
   height: 1.5em;
   font-size: 1.25em;
   margin-top: 0.5em;
-  color: #356;
+  color: #eee;
+  background-color: #333;
 }
 
 .todo-item {
   margin: 0.5em 0;
   font-size: 2em;
+  color: #dde;
 }
 
 .todo-item.completed {
