@@ -15,9 +15,23 @@ pipeline {
         skipDefaultCheckout()
     }
     stages {
+        stage('Clean workspace') {
+            agent { label 'master' }
+            steps {
+                step([$class: 'WsCleanup'])
+            }
+        }
+        stage('Checkout code') {
+            agent { label 'master' }
+            steps {
+                checkout scm
+                stash "${BRANCH_NAME}-${BUILD_ID}"
+            }
+        }
         stage('Unit Tests') {
             agent { label 'master' }
             steps {
+                unstash "${BRANCH_NAME}-${BUILD_ID}"
                 sh './gradlew test'
                 stash "${BRANCH_NAME}-${BUILD_ID}"
             }
@@ -51,7 +65,7 @@ pipeline {
             }
         }
         stage('Deploy to Dev') {
-//            when { branch 'master' }
+            when { branch 'master' }
             agent { label 'master' }
             environment {
                 AWS_ACCESS_KEY_ID = "AKIAJIAYKGAD7SZSF6FQ"
