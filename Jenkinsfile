@@ -13,46 +13,55 @@ pipeline {
 
     stages {
         stage('Unit Tests') {
-            agent any
+            agent { label 'master' }
             steps {
                 sh './gradlew test'
+                stash "DOGE-66-12"
             }
         }
         stage('Static Analysis') {
-            agent any
+            agent { label 'master' }
             steps {
+                unstash "DOGE-66-12"
                 sh './gradlew pmdMain'
                 archiveArtifacts artifacts: '**/build/reports/**', fingerprint: true
+                stash "DOGE-66-12"
             }
         }
         stage('Build Application') {
-            agent any
+            agent { label 'master' }
             steps {
+                unstash "DOGE-66-12"
                 sh './gradlew build'
+                stash "DOGE-66-12"
             }
         }
         stage('Build and Verify Images') {
-            agent any
+            agent { label 'master' }
             environment {
                 AWS_ACCESS_KEY_ID = "AKIAJIAYKGAD7SZSF6FQ"
                 AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
             }
             steps {
+                unstash "DOGE-66-12"
                 sh './packer/build'
+                stash "DOGE-66-12"
             }
         }
         stage('Deploy to Dev') {
-            agent any
+            agent { label 'master' }
             environment {
                 AWS_ACCESS_KEY_ID = "AKIAJIAYKGAD7SZSF6FQ"
                 AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
             }   
             steps {
+                unstash "DOGE-66-12"
                 sh "./terraform/deploy.sh dev ${getAMIFromPackerManifest()}"
+                stash "DOGE-66-12"
             }
         }
         stage('Functional tests against dev') {
-            agent any
+            agent { label 'master' }
             steps {
                 echo 'Functional tests running...and done!'
             }
@@ -63,7 +72,8 @@ pipeline {
             }
         }
         stage('Deploy to Prod') {
-            agent any
+            agent { label 'master' }
+            when { branch 'master' }
             environment {
                 AWS_ACCESS_KEY_ID = "AKIAJIAYKGAD7SZSF6FQ"
                 AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
