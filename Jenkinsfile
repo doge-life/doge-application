@@ -47,6 +47,13 @@ pipeline {
                 echo 'Functional tests running...and done!'
             }
         }
+        stage('Wait for user to deploy to prod') {
+            steps {
+                script {
+                    input 'Deploy this build to production?'
+                }
+            }
+        }
         stage('Deploy to Prod') {
             steps {
                 sh "./terraform/deploy.sh prod ${getAMIFromPackerManifest()}"
