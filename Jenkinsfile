@@ -72,8 +72,11 @@ pipeline {
                 AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
             }   
             steps {
-                unstash "${BRANCH_NAME}-${BUILD_ID}"
-                sh "./terraform/deploy.sh dev ${getAMIFromPackerManifest()}"
+                withCredentials([file(credentialsId: 'doge-private-key-file', variable: 'TF_VAR_doge_private_key_file')]) {
+                    unstash "${BRANCH_NAME}-${BUILD_ID}"
+                    sh "./terraform/deploy.sh dev ${getAMIFromPackerManifest()}"
+                    archiveArtifacts artifacts: "**/terraform.tfstate"
+                }
             }
         }
         stage('Functional tests against dev') {
@@ -97,9 +100,13 @@ pipeline {
                 AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
             }
             steps {
-                unstash "${BRANCH_NAME}-${BUILD_ID}"
-                sh "./terraform/deploy.sh prod ${getAMIFromPackerManifest()}"
+                withCredentials([file(credentialsId: 'doge-private-key-file', variable: 'TF_VAR_doge_private_key_file')]) {
+                    unstash "${BRANCH_NAME}-${BUILD_ID}"
+                    sh "./terraform/deploy.sh prod ${getAMIFromPackerManifest()}"
+                    archiveArtifacts artifacts: "**/terraform.tfstate"
+                }
             }
         }
     }
 }
+
