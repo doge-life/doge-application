@@ -45,6 +45,7 @@ pipeline {
             steps {
                 sh "./terraform/providers/aws/us_east_1_dev/plan ${getAMIFromPackerManifest()}"
                 sh "./terraform/providers/aws/us_east_1_dev/apply ${getAMIFromPackerManifest()}"
+                archiveArtifacts artifacts: "**/terraform.tfstate"
             }
         }
     }
