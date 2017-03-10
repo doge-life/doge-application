@@ -11,29 +11,31 @@ def getAMIFromPackerManifest() {
 pipeline {
     agent none
 
+    options {
+        skipDefaultCheckout()
+    }
     stages {
         stage('Unit Tests') {
             agent { label 'master' }
             steps {
                 sh './gradlew test'
-                stash "DOGE-66-12"
+                stash "${BRANCH_NAME}-${BUILD_ID}"
             }
         }
         stage('Static Analysis') {
             agent { label 'master' }
             steps {
-                unstash "DOGE-66-12"
+                unstash "${BRANCH_NAME}-${BUILD_ID}"
                 sh './gradlew pmdMain'
                 archiveArtifacts artifacts: '**/build/reports/**', fingerprint: true
-                stash "DOGE-66-12"
             }
         }
         stage('Build Application') {
             agent { label 'master' }
             steps {
-                unstash "DOGE-66-12"
+                unstash "${BRANCH_NAME}-${BUILD_ID}"
                 sh './gradlew build'
-                stash "DOGE-66-12"
+                stash "${BRANCH_NAME}-${BUILD_ID}"
             }
         }
         stage('Build and Verify Images') {
@@ -43,42 +45,45 @@ pipeline {
                 AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
             }
             steps {
-                unstash "DOGE-66-12"
+                unstash "${BRANCH_NAME}-${BUILD_ID}"
                 sh './packer/build'
-                stash "DOGE-66-12"
+                stash "${BRANCH_NAME}-${BUILD_ID}"
             }
         }
         stage('Deploy to Dev') {
+//            when { branch 'master' }
             agent { label 'master' }
             environment {
                 AWS_ACCESS_KEY_ID = "AKIAJIAYKGAD7SZSF6FQ"
                 AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
             }   
             steps {
-                unstash "DOGE-66-12"
+                unstash "${BRANCH_NAME}-${BUILD_ID}"
                 sh "./terraform/deploy.sh dev ${getAMIFromPackerManifest()}"
-                stash "DOGE-66-12"
             }
         }
         stage('Functional tests against dev') {
+            when { branch 'master' }
             agent { label 'master' }
             steps {
                 echo 'Functional tests running...and done!'
             }
         }
         stage('Wait for user to deploy to prod') {
+            when { branch 'master' }
             steps {
                 input "Deploy this build to production?"
             }
         }
         stage('Deploy to Prod') {
-            agent { label 'master' }
             when { branch 'master' }
+            agent { label 'master' }
             environment {
                 AWS_ACCESS_KEY_ID = "AKIAJIAYKGAD7SZSF6FQ"
                 AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
             }
             steps {
+                unstash "${BRANCH_NAME}-${BUILD_ID}"
                 sh "./terraform/deploy.sh prod ${getAMIFromPackerManifest()}"
             }
         }
