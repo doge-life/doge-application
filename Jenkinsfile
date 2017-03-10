@@ -14,6 +14,7 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID = "AKIAJIAYKGAD7SZSF6FQ"
         AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
+        TF_VAR_doge_private_key = credentials('doge-private-key')
     }
     stages {
         stage('Unit Tests') {
