@@ -25,21 +25,17 @@ pipeline {
             agent { label 'master' }
             steps {
                 checkout scm
-                stash "${BRANCH_NAME}-${BUILD_ID}"
             }
         }
         stage('Unit Tests') {
             agent { label 'master' }
             steps {
-                unstash "${BRANCH_NAME}-${BUILD_ID}"
                 sh './gradlew test'
-                stash "${BRANCH_NAME}-${BUILD_ID}"
             }
         }
         stage('Static Analysis') {
             agent { label 'master' }
             steps {
-                unstash "${BRANCH_NAME}-${BUILD_ID}"
                 sh './gradlew pmdMain'
                 archiveArtifacts artifacts: '**/build/reports/**', fingerprint: true
             }
@@ -47,9 +43,7 @@ pipeline {
         stage('Build Application') {
             agent { label 'master' }
             steps {
-                unstash "${BRANCH_NAME}-${BUILD_ID}"
                 sh './gradlew build'
-                stash "${BRANCH_NAME}-${BUILD_ID}"
             }
         }
         stage('Build and Verify Images') {
@@ -59,9 +53,7 @@ pipeline {
                 AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
             }
             steps {
-                unstash "${BRANCH_NAME}-${BUILD_ID}"
                 sh './packer/build'
-                stash "${BRANCH_NAME}-${BUILD_ID}"
             }
         }
         stage('Deploy to Dev') {
@@ -73,7 +65,6 @@ pipeline {
             }   
             steps {
                 withCredentials([file(credentialsId: 'doge-private-key-file', variable: 'TF_VAR_doge_private_key_file')]) {
-                    unstash "${BRANCH_NAME}-${BUILD_ID}"
                     sh "./terraform/deploy.sh dev ${getAMIFromPackerManifest()}"
                     archiveArtifacts artifacts: "**/terraform.tfstate"
                 }
@@ -101,7 +92,6 @@ pipeline {
             }
             steps {
                 withCredentials([file(credentialsId: 'doge-private-key-file', variable: 'TF_VAR_doge_private_key_file')]) {
-                    unstash "${BRANCH_NAME}-${BUILD_ID}"
                     sh "./terraform/deploy.sh prod ${getAMIFromPackerManifest()}"
                     archiveArtifacts artifacts: "**/terraform.tfstate"
                 }
