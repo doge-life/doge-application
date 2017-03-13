@@ -9,6 +9,7 @@ def getAMIFromPackerManifest() {
 }
 
 pipeline {
+    agent any
     options {
         skipDefaultCheckout()
     }
