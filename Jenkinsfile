@@ -77,12 +77,6 @@ pipeline {
                 echo 'Functional tests running...and done!'
             }
         }
-        stage('Wait for user to deploy to prod') {
-            when { branch 'master' }
-            steps {
-                input "Deploy this build to production?"
-            }
-        }
         stage('Deploy to Prod') {
             when { branch 'master' }
             agent { label 'master' }
