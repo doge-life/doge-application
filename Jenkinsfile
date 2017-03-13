@@ -9,45 +9,27 @@ def getAMIFromPackerManifest() {
 }
 
 pipeline {
-    agent none
-
     options {
         skipDefaultCheckout()
     }
     stages {
         stage('Clean workspace') {
-            agent { label 'master' }
             steps {
                 step([$class: 'WsCleanup'])
             }
         }
         stage('Checkout code') {
-            agent { label 'master' }
             steps {
                 checkout scm
             }
         }
-        stage('Unit Tests') {
-            agent { label 'master' }
+        stage('Build Application') {
             steps {
-                sh './gradlew test'
-            }
-        }
-        stage('Static Analysis') {
-            agent { label 'master' }
-            steps {
-                sh './gradlew pmdMain'
+                sh './gradlew clean build'
                 archiveArtifacts artifacts: '**/build/reports/**', fingerprint: true
             }
         }
-        stage('Build Application') {
-            agent { label 'master' }
-            steps {
-                sh './gradlew build'
-            }
-        }
         stage('Build and Verify Images') {
-            agent { label 'master' }
             environment {
                 AWS_ACCESS_KEY_ID = "AKIAJIAYKGAD7SZSF6FQ"
                 AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
@@ -58,7 +40,6 @@ pipeline {
         }
         stage('Deploy to Dev') {
             when { branch 'master' }
-            agent { label 'master' }
             environment {
                 AWS_ACCESS_KEY_ID = "AKIAJIAYKGAD7SZSF6FQ"
                 AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
@@ -72,14 +53,12 @@ pipeline {
         }
         stage('Functional tests against dev') {
             when { branch 'master' }
-            agent { label 'master' }
             steps {
                 echo 'Functional tests running...and done!'
             }
         }
         stage('Deploy to Prod') {
             when { branch 'master' }
-            agent { label 'master' }
             environment {
                 AWS_ACCESS_KEY_ID = "AKIAJIAYKGAD7SZSF6FQ"
                 AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
