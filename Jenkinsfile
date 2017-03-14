@@ -12,11 +12,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Clean workspace') {
-            steps {
-                step([$class: 'WsCleanup'])
-            }
-        }
         stage('Build Application') {
             steps {
                 sh './gradlew clean build'
