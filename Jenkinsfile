@@ -9,45 +9,16 @@ def getAMIFromPackerManifest() {
 }
 
 pipeline {
-    agent none
+    agent any
 
-    options {
-        skipDefaultCheckout()
-    }
     stages {
-        stage('Clean workspace') {
-            agent { label 'master' }
+        stage('Build Application') {
             steps {
-                step([$class: 'WsCleanup'])
-            }
-        }
-        stage('Checkout code') {
-            agent { label 'master' }
-            steps {
-                checkout scm
-            }
-        }
-        stage('Unit Tests') {
-            agent { label 'master' }
-            steps {
-                sh './gradlew test'
-            }
-        }
-        stage('Static Analysis') {
-            agent { label 'master' }
-            steps {
-                sh './gradlew pmdMain'
+                sh './gradlew clean build'
                 archiveArtifacts artifacts: '**/build/reports/**', fingerprint: true
             }
         }
-        stage('Build Application') {
-            agent { label 'master' }
-            steps {
-                sh './gradlew build'
-            }
-        }
         stage('Build and Verify Images') {
-            agent { label 'master' }
             environment {
                 AWS_ACCESS_KEY_ID = "AKIAJIAYKGAD7SZSF6FQ"
                 AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
@@ -58,7 +29,6 @@ pipeline {
         }
         stage('Deploy to Dev') {
             when { branch 'master' }
-            agent { label 'master' }
             environment {
                 AWS_ACCESS_KEY_ID = "AKIAJIAYKGAD7SZSF6FQ"
                 AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
@@ -72,20 +42,12 @@ pipeline {
         }
         stage('Functional tests against dev') {
             when { branch 'master' }
-            agent { label 'master' }
             steps {
                 echo 'Functional tests running...and done!'
             }
         }
-        stage('Wait for user to deploy to prod') {
-            when { branch 'master' }
-            steps {
-                input "Deploy this build to production?"
-            }
-        }
         stage('Deploy to Prod') {
             when { branch 'master' }
-            agent { label 'master' }
             environment {
                 AWS_ACCESS_KEY_ID = "AKIAJIAYKGAD7SZSF6FQ"
                 AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
