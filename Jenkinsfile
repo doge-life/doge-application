@@ -10,9 +10,7 @@ def getAMIFromPackerManifest() {
 
 pipeline {
     agent any
-    options {
-        skipDefaultCheckout()
-    }
+
     stages {
         stage('Clean workspace') {
             steps {
