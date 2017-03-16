@@ -2,6 +2,8 @@ package main.doge
 
 import spock.lang.Specification
 
+import static com.lesfurets.jenkins.unit.MethodCall.callArgsToString
+
 class FirstPipelineSpec extends Specification {
 
     @Delegate PipelineTestHelper pipelineTestHelper = new PipelineTestHelper()
@@ -10,7 +12,7 @@ class FirstPipelineSpec extends Specification {
         pipelineTestHelper.setUp()
     }
 
-    def 'does something'() {
+    def 'should determine first sh call in jenkinsfile'() {
         def invocations = []
 
         given:
@@ -26,7 +28,19 @@ class FirstPipelineSpec extends Specification {
         script.execute()
 
         then:
-        assert invocations == []
+        assert invocations.first() == ['./gradlew test']
 
+    }
+
+    def 'should call gradlew test in the jenkinsfile'() {
+        given:
+
+        when:
+        loadScript('../Jenkinsfile')
+
+        then:
+        callArgsToString(helper.callStack.findAll { call ->
+            call.methodName == 'sh'
+        }.first()) == './gradlew test'
     }
 }
