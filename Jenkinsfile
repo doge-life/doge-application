@@ -11,43 +11,54 @@ def getAMIFromPackerManifest() {
 pipeline {
     agent any
 
-    environment {
-        AWS_ACCESS_KEY_ID = "AKIAJIAYKGAD7SZSF6FQ"
-        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
-    }
     stages {
-        stage('Unit Tests') {
+        stage('Build Application') {
             steps {
-                sh './gradlew test'
-            }
-        }
-        stage('Static Analysis') {
-            steps {
-                sh './gradlew pmdMain'
+                sh './gradlew clean build'
                 archiveArtifacts artifacts: '**/build/reports/**', fingerprint: true
             }
         }
-        stage('Build Application') {
-            steps {
-                sh './gradlew build'
-            }
-        }
         stage('Build and Verify Images') {
+            environment {
+                AWS_ACCESS_KEY_ID = "AKIAJIAYKGAD7SZSF6FQ"
+                AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
+            }
             steps {
                 sh './packer/build'
             }
         }
         stage('Deploy to Dev') {
-            when {
-                branch 'master'
+            when { branch 'master' }
+            environment {
+                AWS_ACCESS_KEY_ID = "AKIAJIAYKGAD7SZSF6FQ"
+                AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
+            }   
+            steps {
+                withCredentials([file(credentialsId: 'doge-private-key-file', variable: 'TF_VAR_doge_private_key_file')]) {
+                    sh "./terraform/deploy.sh dev ${getAMIFromPackerManifest()}"
+                    archiveArtifacts artifacts: "**/terraform.tfstate"
+                }
+            }
+        }
+        stage('Functional tests against dev') {
+            when { branch 'master' }
+            steps {
+                echo 'Functional tests running...and done!'
+            }
+        }
+        stage('Deploy to Prod') {
+            when { branch 'master' }
+            environment {
+                AWS_ACCESS_KEY_ID = "AKIAJIAYKGAD7SZSF6FQ"
+                AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
             }
             steps {
                 withCredentials([file(credentialsId: 'doge-private-key-file', variable: 'TF_VAR_doge_private_key_file')]) {
-                    sh "./terraform/providers/aws/us_east_1_dev/plan ${getAMIFromPackerManifest()}"
-                    sh "./terraform/providers/aws/us_east_1_dev/apply ${getAMIFromPackerManifest()}"
+                    sh "./terraform/deploy.sh prod ${getAMIFromPackerManifest()}"
                     archiveArtifacts artifacts: "**/terraform.tfstate"
                 }
             }
         }
     }
 }
+

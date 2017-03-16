@@ -1,9 +1,0 @@
-#!/bin/bash -e
-
-pushd `dirname "$0"`
-
-terraform remote config -backend=S3 -backend-config="bucket=doge-application" -backend-config="key=terraform/dev-env-terraform.tfstate" -backend-config="region=us-east-1"
-
-terraform plan -var ami_id=$1
-
-popd
