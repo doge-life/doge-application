@@ -1,6 +1,6 @@
 |            |             |
 ------------ | -------------
-Jenkins      | [![Jenkins](http://ec2-107-21-21-140.compute-1.amazonaws.com/buildStatus/icon?job=doge-life/doge-application/master)](http://ec2-107-21-21-140.compute-1.amazonaws.com/job/doge-life/job/doge-application/job/master/)
+Jenkins      | [![Build Status](http://ec2-52-55-96-63.compute-1.amazonaws.com/buildStatus/icon?job=doge-life/doge-application/master)](http://ec2-52-55-96-63.compute-1.amazonaws.com/job/doge-life/job/doge-application/job/master/)
 
 |            |             |
 ------------ | -------------
