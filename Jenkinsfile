@@ -12,12 +12,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Build Application') {
-            steps {
-                sh './gradlew clean build'
-                archiveArtifacts artifacts: '**/build/reports/**', fingerprint: true
-            }
-        }
         stage('Build and Verify Images') {
             environment {
                 AWS_ACCESS_KEY_ID = "AKIAJIAYKGAD7SZSF6FQ"
