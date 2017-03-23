@@ -18,6 +18,3 @@ describe service('doge-webapp') do
   it { should be_enabled }
 end
 
-describe iptables do
-    it { should have_rule('-A PREROUTING -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 8080').with_table('nat') }
-end
