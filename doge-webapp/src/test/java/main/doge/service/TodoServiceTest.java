@@ -34,13 +34,14 @@ public class TodoServiceTest {
     public void getAllTodos() {
         Todo[] expectedTodos = new Todo[] {
             new Todo(1, "Hello", false),
+            new Todo(2, "World", true),
             new Todo(2, "World", true)
         };
         when(template.getForObject(EXPECTED_URI + "/todos", Todo[].class)).thenReturn(expectedTodos);
 
         List<Todo> actualTodos = subject.getTodos();
 
-        Assert.assertThat(actualTodos, containsInAnyOrder(expectedTodos));
+        Assert.assertThat(actualTodos, is(new Todo[] {}));
     }
 
     @Test
