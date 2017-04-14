@@ -31,7 +31,8 @@ public class FrontPageControllerTest {
     public void getFrontPage_GetsDataFromService() {
         List<Todo> expectedTodos = Arrays.asList(
             new Todo(11, "Good-bye", false),
-            new Todo(12, "Chalon", true)
+            new Todo(12, "Chalon", true),
+            new Todo(12, "one more", true)
         );
         when(todoService.getTodos()).thenReturn(expectedTodos);
 
