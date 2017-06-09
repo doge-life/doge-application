@@ -38,7 +38,7 @@ public class FrontPageControllerTest {
 
         ModelAndView modelAndView = subject.getFrontPage();
 
-        assertThat(modelAndView.getViewName(), is("front"));
+        assertThat(modelAndView.getViewName(), is("doge-wait-no"));
         assertThat(modelAndView.getModel().get("todos"), is(expectedTodos));
     }
 }
