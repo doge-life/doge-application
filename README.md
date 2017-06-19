@@ -8,7 +8,7 @@ Code Climate GPA | [![Code Climate](https://codeclimate.com/github/doge-life/dog
 Code Climate Coverage | [![Test Coverage](https://codeclimate.com/github/doge-life/doge-application/badges/coverage.svg)](https://codeclimate.com/github/doge-life/doge-application/coverage)
 Code Climate Issues | [![Issue Count](https://codeclimate.com/github/doge-life/doge-application/badges/issue_count.svg)](https://codeclimate.com/github/doge-life/doge-application)
 
-# doge-application
+# doge application 0.0.1
 The Front-end application of Doge Life.
 
 ## Connecting to the proxy
