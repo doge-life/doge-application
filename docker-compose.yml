@@ -1,0 +1,8 @@
+version: '3'
+services:
+  doge_application:
+    image: "192.168.224.204:8125/doge-life/doge-application:0.0.1"
+    ports:
+     - "8000:8080"
+  doge_tasks_service:
+    image: "192.168.224.204:8125/doge-life/doge-tasks-service:0.0.1"
