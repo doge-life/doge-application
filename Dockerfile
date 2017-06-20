@@ -6,4 +6,4 @@ WORKDIR /application
 
 ADD VERSION .
 
-CMD ["./doge-webapp.jar"]
+CMD ["java", "-jar", "doge-webapp.jar"]
