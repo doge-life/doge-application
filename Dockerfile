@@ -1,7 +1,4 @@
-FROM ubuntu:16.04
-
-RUN apt-get update && apt-get install -y \
-    openjdk-8-jdk
+FROM openjdk:alpine
 
 ADD ./doge-webapp/build/libs /application
 
