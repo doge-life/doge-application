@@ -11,6 +11,14 @@ Code Climate Issues | [![Issue Count](https://codeclimate.com/github/doge-life/d
 # doge application 0.0.1
 The Front-end application of Doge Life.
 
+## Docker Compose
+
+You can access the app at localhost:8080 after running the following command: 
+
+```bash 
+docker-compose up 
+```
+
 ## Connecting to the proxy
 
 If you are building a Docker image on the DogeData network, you will need to connect to a proxy. The packer build is looking for the following environment variables to be set:
